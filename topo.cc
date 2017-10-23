@@ -43,7 +43,7 @@ main (int argc, char *argv[])
 {
   bool verbose = true;
   uint32_t nCsma = 2;
-  uint32_t nWifi = 3;
+  uint32_t nWifi = 12;
   bool tracing = false;
 
   CommandLine cmd;
@@ -181,12 +181,12 @@ main (int argc, char *argv[])
 
   Simulator::Stop (Seconds (10.0));
 
-  // if (tracing == true)
-  //   {
-  //     // pointToPoint.EnablePcapAll ("third");
-  //     phy.EnablePcap ("third", apDevices.Get (0));
-  //     csma.EnablePcap ("third", csmaDevices.Get (0), true);
-  //   }
+  if (tracing == true)
+    {
+      // pointToPoint.EnablePcapAll ("third");
+      phy.EnablePcap ("third", apDevices.Get (0));
+      csma.EnablePcap ("third", csmaDevices.Get (0), true);
+    }
 
   Simulator::Run ();
   Simulator::Destroy ();
