@@ -136,8 +136,8 @@ main (int argc, char *argv[])
                              "Bounds", RectangleValue (Rectangle (-50, 50, -50, 50)));
   mobility.Install (wifiStaNodes);
 
-  // mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-  // mobility.Install (wifiApNode);
+  mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+  mobility.Install (wifiApNode);
 
   InternetStackHelper stack;
   stack.Install (csmaNodes);
@@ -164,17 +164,16 @@ main (int argc, char *argv[])
 
   UdpEchoServerHelper echoServer (9);
 
-  ApplicationContainer serverApps = echoServer.Install (csmaNodes.Get (nCsma));
+  ApplicationContainer serverApps = echoServer.Install (csmaNodes.Get (nCsma-1));
   serverApps.Start (Seconds (1.0));
   serverApps.Stop (Seconds (10.0));
 
-  UdpEchoClientHelper echoClient (csmaInterfaces.GetAddress (nCsma), 9);
+  UdpEchoClientHelper echoClient (csmaInterfaces.GetAddress (nCsma-1), 9);
   echoClient.SetAttribute ("MaxPackets", UintegerValue (1));
   echoClient.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
   echoClient.SetAttribute ("PacketSize", UintegerValue (1024));
 
-  ApplicationContainer clientApps =
-    echoClient.Install (wifiStaNodes.Get (nWifi - 1));
+  ApplicationContainer clientApps = echoClient.Install (wifiStaNodes.Get (nWifi - 1));
   clientApps.Start (Seconds (2.0));
   clientApps.Stop (Seconds (10.0));
 
